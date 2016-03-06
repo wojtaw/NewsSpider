@@ -9,10 +9,10 @@ import java.util.ArrayList;
  */
 public class Main {
     public static void main(String[] args) {
-        //GoogleSearch search = new GoogleSearch();
         IhnedScraper ihned = new IhnedScraper();
         ArrayList<ArticleLinks> articleLinks = ihned.scrapeKeyword("NWR");
 
+        /*
         FileOutputStream fileOut =
                 null;
         try {
@@ -27,5 +27,6 @@ public class Main {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
     }
 }
