@@ -1,22 +1,20 @@
+import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
-import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
 import org.apache.http.message.BasicNameValuePair;
-import org.jsoup.Jsoup;
+import org.apache.http.protocol.HTTP;
+import org.apache.http.util.EntityUtils;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -100,47 +98,73 @@ public class IhnedScraper {
         System.out.println(es.toString());
     }
 
-    private void loadWebsite(int startFrom, String fromDate, String toDate){
-        try {
-            System.out.println("FromDate "+fromDate+" "+toDate+" "+startFrom);
+    private void loadWebsite(int startFrom, String fromDate, String toDate) {
+        System.out.println("FromDate "+fromDate+" "+toDate+" "+startFrom);
 
-            BufferedReader rd = new BufferedReader(
-                    new InputStreamReader(loadHTTPContent()));
+        System.out.println(loadHTTPContent());
 
-            StringBuffer result = new StringBuffer();
-            String line = "";
-            while ((line = rd.readLine()) != null) {
-                result.append(line);
-            }
-            System.out.println(result.toString());
-
-            //doc = Jsoup.parse(loadHTTPContent(), "UTF8", "");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        //doc = Jsoup.parse(loadHTTPContent(), "UTF8", "");
     }
 
-    private InputStream loadHTTPContent(){
+    private String loadHTTPContent(){
         HttpClient httpclient = HttpClientBuilder.create().build();
         HttpPost post = new HttpPost(urlToAnalyze);
 
-        // add header
-        //post.setHeader("User-Agent", USER_AGENT);
-        post.setHeader("Content-Type", "text/html; charset=UTF-8");
+        post.setHeader("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
+        post.setHeader("accept-charset", "UTF-8");
+        //post.setHeader("User-Agent", "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36");
 
 
         List<NameValuePair> urlParameters = new ArrayList<NameValuePair>();
-        urlParameters.add(new BasicNameValuePair("sn", "C02G8416DRJM"));
-        urlParameters.add(new BasicNameValuePair("cn", ""));
-        urlParameters.add(new BasicNameValuePair("locale", ""));
-        urlParameters.add(new BasicNameValuePair("caller", ""));
-        urlParameters.add(new BasicNameValuePair("num", "12345"));
-
+        List<NameValuePair> urlParameters2 = new ArrayList<NameValuePair>();
+        urlParameters.add(new BasicNameValuePair("ft[max_amount]","50"));
+        urlParameters.add(new BasicNameValuePair("ft[item][0]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][1]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][2]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][3]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][4]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][5]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][6]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][7]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][8]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][9]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][10]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][11]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][12]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][13]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][14]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][15]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][16]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][17]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][18]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][19]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][20]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][21]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][22]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[item][23]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[cgrp][0]","1"));
+        urlParameters.add(new BasicNameValuePair("ft[type]","2"));
+        urlParameters.add(new BasicNameValuePair("ft[time]","2"));
+        urlParameters.add(new BasicNameValuePair("ft[show]","all"));
+        urlParameters.add(new BasicNameValuePair("ft[sklonuj]","on"));
+        urlParameters.add(new BasicNameValuePair("ft[from_date]","2008-01-01"));
+        urlParameters.add(new BasicNameValuePair("ft[to_date]","2009-01-01"));
+        urlParameters.add(new BasicNameValuePair("ft[what]","NWR"));
+        urlParameters.add(new BasicNameValuePair("s1","0"));
+        urlParameters.add(new BasicNameValuePair("s2","0"));
+        urlParameters.add(new BasicNameValuePair("s3","0"));
+        urlParameters.add(new BasicNameValuePair("s4","0"));
+        urlParameters.add(new BasicNameValuePair("s5","0"));
+        urlParameters.add(new BasicNameValuePair("s6","0"));
+        urlParameters.add(new BasicNameValuePair("m",""));
         HttpResponse response;
         try {
+            //post.setEntity(new UrlEncodedFormEntity(urlParameters));
             post.setEntity(new UrlEncodedFormEntity(urlParameters));
+            System.out.println(post.getURI());
             response = httpclient.execute(post);
-            return response.getEntity().getContent();
+            HttpEntity entity = response.getEntity();
+            return EntityUtils.toString(entity,"UTF-8");
         } catch (IOException e) {
             e.printStackTrace();
             return null;
